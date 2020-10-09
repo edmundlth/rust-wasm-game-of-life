@@ -1,4 +1,5 @@
 {
+  "homepage": "https://edmundlth.github.io/rust-wasm-game-of-life/www/",
   "name": "create-wasm-app",
   "version": "0.1.0",
   "description": "create an app to consume rust-generated wasm packages",
@@ -7,6 +8,8 @@
     "create-wasm-app": ".bin/create-wasm-app.js"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server"
   },
