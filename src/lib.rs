@@ -78,8 +78,8 @@ impl Universe {
 #[wasm_bindgen]
 impl Universe {
     pub fn new() -> Universe {
-        let width = 100;
-        let height = 81;
+        let width = 64;
+        let height = 64;
         let cells = (0..width * height).map(
             |_| {
                 if js_sys::Math::random() < 0.2 {
@@ -98,8 +98,8 @@ impl Universe {
     }
 
     pub fn create_blank() -> Universe {
-        let width = 100;
-        let height = 81;
+        let width = 64;
+        let height = 64;
         let cells = (0..width * height).map(|_| Cell::Dead).collect();
 
         Universe {

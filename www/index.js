@@ -176,14 +176,17 @@ let draw_y = 0;
 
 drawButton.addEventListener("click", () => {
     if (inDrawMode) {
-        drawButton.textContent = "🛑";
-    } else {
         drawButton.textContent = "✏️";
+    } else {
+        drawButton.textContent = "🛑";
     }
     inDrawMode = !inDrawMode;
 });
 
 canvas.addEventListener("mousedown", event => {
+    if (!inDrawMode) {
+        return
+    }
     isDrawing = true;
     [draw_x, draw_y] = get_clicked_cell(event);
 });
@@ -191,6 +194,8 @@ canvas.addEventListener("mousedown", event => {
 canvas.addEventListener("mousemove", event => {
     if (isDrawing === true) {
         universe.fill_cell(draw_x, draw_y);
+        drawGrid();
+        drawCells();
         [draw_x, draw_y] = get_clicked_cell(event);
     }
 });
