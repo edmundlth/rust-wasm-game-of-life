@@ -209,7 +209,7 @@ canvas.addEventListener("mouseup", event => {
 });
 
 
-// -------------------------
+// -------------------------Initialise page
 drawGrid();
 drawCells();
 pause();
