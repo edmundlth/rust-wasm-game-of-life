@@ -10,13 +10,18 @@ body {
     justify-content: center;
 }
 
+canvas {
+    border: 1px solid black;
+}
+
 .btn-group button {
-    background-color: #99ffcc; /* Green background */
+    background-color: white; /* Green background */
     border-radius: 8px;
     border: 2px solid black;
     color: black;
     padding: 10px 24px; /* Some padding */
     cursor: hand; /* Pointer/hand icon */
+    font-size: 20px;
     /*float: left; !* Float the buttons side by side *!*/
 }
 
@@ -33,6 +38,6 @@ body {
 
 /* Add a background color on hover */
 .btn-group button:hover {
-    background-color: #3e8e41;
+    background-color: lightgreen;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19)
 }

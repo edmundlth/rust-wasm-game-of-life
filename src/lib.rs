@@ -24,6 +24,10 @@ impl Cell {
             Cell::Alive => Cell::Dead,
         };
     }
+
+    fn make_alive(&mut self) {
+        *self = Cell::Alive
+    }
 }
 
 #[wasm_bindgen]
@@ -93,6 +97,18 @@ impl Universe {
         }
     }
 
+    pub fn create_blank() -> Universe {
+        let width = 100;
+        let height = 81;
+        let cells = (0..width * height).map(|_| Cell::Dead).collect();
+
+        Universe {
+            width,
+            height,
+            cells
+        }
+    }
+
     pub fn render(&self) -> String {
         self.to_string()
     }
@@ -121,6 +137,11 @@ impl Universe {
     pub fn toggle_cell(&mut self, row: u32, col: u32) {
         let idx = self.get_index(row, col);
         self.cells[idx].toggle();
+    }
+
+    pub fn fill_cell(&mut self, row: u32, col: u32) {
+        let idx = self.get_index(row, col);
+        self.cells[idx].make_alive();
     }
 
     pub fn width(&self) -> u32 {

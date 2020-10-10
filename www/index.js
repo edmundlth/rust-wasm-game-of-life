@@ -76,18 +76,32 @@ const drawCells = () => {
 };
 
 
-// Buttons
+const get_clicked_cell = event => {
+    const boundingRect = canvas.getBoundingClientRect();
+
+    const scaleX = canvas.width / boundingRect.width;
+    const scaleY = canvas.height / boundingRect.height;
+
+    const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
+    const canvasTop = (event.clientY - boundingRect.top) * scaleY;
+
+    const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
+    const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
+    return [row, col]
+};
+
+// ------------------------- Buttons
 const isPaused = () => {
     return animationId === null;
 };
 const playPauseButton = document.getElementById("play-pause");
 const play = () => {
-    playPauseButton.textContent = "pause";
+    playPauseButton.textContent = "⏸";
     renderLoop();
 };
 
 const pause = () => {
-    playPauseButton.textContent =  "play";
+    playPauseButton.textContent =  "▶️";
     cancelAnimationFrame(animationId);
     animationId = null;
 };
@@ -112,15 +126,26 @@ const resetUniverse = () => {
 
     drawGrid();
     drawCells();
+    pause();
 };
 
-// Event listeners
-tickButton.addEventListener("click", event => {
+const blankButton = document.getElementById("blank");
+const eraseUniverse = () => {
+    universe = Universe.create_blank();
+    drawGrid();
+    drawCells();
+    pause();
+};
+
+let inDrawMode = false;
+const drawButton = document.getElementById("draw");
+
+// ------------------------- Event listeners
+tickButton.addEventListener("click", () => {
     executeTick();
 });
 
-
-playPauseButton.addEventListener("click", event => {
+playPauseButton.addEventListener("click", () => {
     if (isPaused()) {
         play();
     } else {
@@ -128,29 +153,58 @@ playPauseButton.addEventListener("click", event => {
     }
 });
 
-
 canvas.addEventListener("click", event => {
-    const boundingRect = canvas.getBoundingClientRect();
-
-    const scaleX = canvas.width / boundingRect.width;
-    const scaleY = canvas.height / boundingRect.height;
-
-    const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
-    const canvasTop = (event.clientY - boundingRect.top) * scaleY;
-
-    const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
-    const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
-
+    const [row, col] = get_clicked_cell(event);
     universe.toggle_cell(row, col);
-
     drawGrid();
     drawCells();
 });
 
-resetButton.addEventListener("click", event => {
-   resetUniverse();
+resetButton.addEventListener("click", () => {
+    resetUniverse();
 });
 
+blankButton.addEventListener("click", () => {
+    eraseUniverse();
+});
+
+
+// ------------------------- Drawing...
+let isDrawing = false;
+let draw_x = 0;
+let draw_y = 0;
+
+drawButton.addEventListener("click", () => {
+    if (inDrawMode) {
+        drawButton.textContent = "🛑";
+    } else {
+        drawButton.textContent = "✏️";
+    }
+    inDrawMode = !inDrawMode;
+});
+
+canvas.addEventListener("mousedown", event => {
+    isDrawing = true;
+    [draw_x, draw_y] = get_clicked_cell(event);
+});
+
+canvas.addEventListener("mousemove", event => {
+    if (isDrawing === true) {
+        universe.fill_cell(draw_x, draw_y);
+        [draw_x, draw_y] = get_clicked_cell(event);
+    }
+});
+
+canvas.addEventListener("mouseup", event => {
+    if (isDrawing === true) {
+        universe.fill_cell(draw_x, draw_y);
+        draw_x = draw_y = 0;
+        isDrawing = false;
+    }
+});
+
+
+// -------------------------
 drawGrid();
 drawCells();
 pause();
