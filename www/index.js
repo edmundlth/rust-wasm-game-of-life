@@ -155,7 +155,7 @@ playPauseButton.addEventListener("click", () => {
 
 canvas.addEventListener("click", event => {
     const [row, col] = get_clicked_cell(event);
-    universe.toggle_cell(row, col);
+    universe.fill_cell(row, col);
     drawGrid();
     drawCells();
 });
