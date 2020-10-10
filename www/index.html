@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="./index.css">
-    <title>Game of Life (rust-wasm)</title>
+    <title>Game of Life</title>
   </head>
   <body>
     <h1>
@@ -20,16 +20,31 @@
       <button id="blank"> 🔥 </button>
       <button id="draw"> ✏️ </button>
     </div>
+
     <p>
         Click on dead cell to make it alive. <br>
         Click  ✏️  and hold down mouse to draw on the universe. <br>
-        A game to illustrate complexity: Try to kill all cells without using 🔥. <br>
-        (Hint: I haven't succeed once without using ⏸.) <br>
-        There's an <a
+        Try to kill all cells without using 🔥. (Hint: I haven't succeed once without using ⏸.) <br>
+        Although the system follows
+        <a
+            href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules"
+            target="_blank"
+            rel="noopener noreferrer"
+            >
+            an extremely simple set of rule,
+        </a> Game of Life is in fact a Turing complete system. <br>
+        As such, it can exhibit extremely complex behaviour. <br>
+        See for example this <a
                 href="https://www.youtube.com/watch?v=C2vgICfQawE&feature=emb_rel_end"
                 target="_blank"
                 rel="noopener noreferrer"
-        >epic version on YouTube</a>
+        >epic simulation on YouTube</a> and
+        <a
+                href="https://en.wikipedia.org/wiki/Rule_30#:~:text=Rule%2030%20is%20an%20elementary,%2C%20displaying%20aperiodic%2C%20chaotic%20behaviour.&text=Rule%2030%20is%20so%20named,set%20(as%20described%20below)."
+                target="_blank"
+                rel="noopener noreferrer"
+        >Wolfram's Rule 30</a>.
+
 
     </p>
     <p style="font-size: 10px; font-weight: normal">
