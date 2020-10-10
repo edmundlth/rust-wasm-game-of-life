@@ -17,6 +17,15 @@ pub enum Cell {
     Alive,
 }
 
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        };
+    }
+}
+
 #[wasm_bindgen]
 pub struct Universe {
     width: u32,
@@ -46,8 +55,48 @@ impl Universe {
     }
 }
 
+impl Universe {
+    /// Get the dead and alive values of the entire universe.
+    pub fn get_cells(&self) -> &[Cell] {
+        &self.cells
+    }
+
+    /// Set cells to be alive in a universe by passing the row and column
+    /// of each cell as an array.
+    pub fn set_cells(&mut self, cells: &[(u32, u32)]) {
+        for (row, col) in cells.iter().cloned() {
+            let idx = self.get_index(row, col);
+            self.cells[idx] = Cell::Alive;
+        }
+    }
+}
+
 #[wasm_bindgen]
 impl Universe {
+    pub fn new() -> Universe {
+        let width = 100;
+        let height = 81;
+        let cells = (0..width * height).map(
+            |_| {
+                if js_sys::Math::random() < 0.2 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            }
+        ).collect();
+
+        Universe {
+            width,
+            height,
+            cells,
+        }
+    }
+
+    pub fn render(&self) -> String {
+        self.to_string()
+    }
+
     pub fn tick(&mut self) {
         let mut next = self.cells.clone();
 
@@ -69,6 +118,11 @@ impl Universe {
         self.cells = next;
     }
 
+    pub fn toggle_cell(&mut self, row: u32, col: u32) {
+        let idx = self.get_index(row, col);
+        self.cells[idx].toggle();
+    }
+
     pub fn width(&self) -> u32 {
         self.width
     }
@@ -79,6 +133,16 @@ impl Universe {
 
     pub fn cells(&self) -> *const Cell {
         self.cells.as_ptr()
+    }
+
+    pub fn set_width(&mut self, width: u32) {
+        self.width = width;
+        self.cells = (0..width * self.height).map(|_| Cell::Dead).collect();
+    }
+
+    pub fn set_height(&mut self, height: u32){
+        self.height = height;
+        self.cells = (0..height * self.width).map(|_| Cell::Dead).collect();
     }
 }
 
@@ -92,32 +156,5 @@ impl fmt::Display for Universe {
             write!(f, "\n")?;
         }
         Ok(())
-    }
-}
-
-#[wasm_bindgen]
-impl Universe {
-    pub fn new() -> Universe {
-        let width = 64;
-        let height = 64;
-        let cells = (0..width * height).map(
-            |_| {
-                if js_sys::Math::random() < 0.2 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            }
-        ).collect();
-
-        Universe {
-            width,
-            height,
-            cells,
-        }
-    }
-
-    pub fn render(&self) -> String {
-        self.to_string()
     }
 }

@@ -1,5 +1,5 @@
 {
-  "homepage": "https://edmundlth.github.io/rust-wasm-game-of-life/www/",
+  "homepage": "https://edmundlth.github.io/rust-wasm-game-of-life",
   "name": "create-wasm-app",
   "version": "0.1.0",
   "description": "create an app to consume rust-generated wasm packages",
@@ -9,13 +9,13 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rustwasm/create-wasm-app.git"
+    "url": "git+https://github.com/edmundlth/rust-wasm-game-of-life.git"
   },
   "keywords": [
     "webassembly",
@@ -23,20 +23,21 @@
     "rust",
     "webpack"
   ],
-  "author": "Ashley Williams <ashley666ashley@gmail.com>",
+  "author": "edmund",
   "license": "(MIT OR Apache-2.0)",
   "bugs": {
-    "url": "https://github.com/rustwasm/create-wasm-app/issues"
+    "url": "https://github.com/edmundlth/rust-wasm-game-of-life/issues"
   },
-  "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
   "dependencies": {
+    "gh-pages": "^3.1.0",
     "wasm-game-of-life": "file:../pkg"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.0",
     "hello-wasm-pack": "^0.1.0",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
-    "copy-webpack-plugin": "^5.0.0"
+    "webpack-merge": "^5.2.0"
   }
 }
