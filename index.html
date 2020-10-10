@@ -6,7 +6,9 @@
     <title>Game of Life (rust-wasm)</title>
   </head>
   <body>
-    <h1> Conway Game of Life </h1>
+    <h1>
+        Conway Game of Life
+    </h1>
     <div>
       <canvas id="game-of-life-canvas"></canvas>
     </div>
@@ -20,8 +22,15 @@
     </div>
     <p>
       Click on individual cell to toggle its state. <br>
-      Click  ✏️  and hold down mouse to draw on the universe. <br>
-      (<a
+      Click  ✏️  and hold down mouse to draw on the universe.
+    </p>
+    <p style="font-size: 10px; font-weight: normal">
+        Created with JavaScript and Rust 🦀, complied to WebAssembly 🕸 using
+        <a
+                href=https://rustwasm.github.io/docs/book/introduction.html"
+                target="_blank"
+                rel="noopener noreferrer">rustwasm</a>.
+        (<a
             href="https://github.com/edmundlth/rust-wasm-game-of-life"
             target="_blank"
             rel="noopener noreferrer"
