@@ -118,7 +118,12 @@ const executeTick = () => {
         // only execute when the loop is in pause.
         return
     }
-    universe.tick();
+    universe.tick(
+        parseFloat(birthRateSlider.value),
+        parseFloat(spontaneousBirthRateSlider.value),
+        parseFloat(crowdedDeathRateSlider.value),
+        parseFloat(isolationDeathRateSlider.value),
+    );
     drawGrid();
     drawCells();
 };
@@ -176,7 +181,7 @@ isolationDeathRateSlider.oninput = sliderTextUpdate;
 function sliderTextUpdate() {
     let elem = document.getElementById("label_" + this.id);
     let text = elem.innerHTML;
-    text = text.split(":")[0] + ": " + parseFloat(this.value).toFixed(2);
+    text = text.split(":")[0] + ": " + parseFloat(this.value).toFixed(3);
     elem.innerHTML = text;
 }
 
@@ -242,7 +247,7 @@ canvas.addEventListener("mousemove", event => {
     }
 });
 
-canvas.addEventListener("mouseup", event => {
+canvas.addEventListener("mouseup", () => {
     if (isDrawing === true) {
         universe.fill_cell(draw_x, draw_y);
         draw_x = draw_y = 0;
