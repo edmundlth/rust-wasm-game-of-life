@@ -20,7 +20,12 @@ canvas.width = (CELL_SIZE + 1) * width + 1;
 const ctx = canvas.getContext('2d');
 let animationId = null;
 const renderLoop = () => {
-    universe.tick();
+    universe.tick(
+        parseFloat(birthRateSlider.value),
+        parseFloat(spontaneousBirthRateSlider.value),
+        parseFloat(crowdedDeathRateSlider.value),
+        parseFloat(isolationDeathRateSlider.value),
+    );
     drawGrid();
     drawCells();
 
@@ -139,6 +144,43 @@ const eraseUniverse = () => {
 
 let inDrawMode = false;
 const drawButton = document.getElementById("draw");
+
+
+const restoreDefaultButton = document.getElementById("restore-default");
+restoreDefaultButton.onclick = () => {
+    birthRateSlider.value = 1.00;
+    sliderTextUpdate.call(birthRateSlider);
+    spontaneousBirthRateSlider.value = 0.00;
+    sliderTextUpdate.call(spontaneousBirthRateSlider);
+    crowdedDeathRateSlider.value = 1.00;
+    sliderTextUpdate.call(crowdedDeathRateSlider);
+    isolationDeathRateSlider.value = 1.00;
+    sliderTextUpdate.call(isolationDeathRateSlider);
+};
+
+
+//----------------------------------------- range sliders
+let birthRateSlider = document.getElementById("birth_rate");
+birthRateSlider.oninput = sliderTextUpdate;
+
+let spontaneousBirthRateSlider = document.getElementById("spontaneous_birth_rate");
+spontaneousBirthRateSlider.oninput = sliderTextUpdate;
+
+let crowdedDeathRateSlider = document.getElementById("crowded_death_rate");
+crowdedDeathRateSlider.oninput = sliderTextUpdate;
+
+let isolationDeathRateSlider = document.getElementById("isolation_death_rate");
+isolationDeathRateSlider.oninput = sliderTextUpdate;
+
+// Update the current slider value (each time you drag the slider handle)
+function sliderTextUpdate() {
+    let elem = document.getElementById("label_" + this.id);
+    let text = elem.innerHTML;
+    text = text.split(":")[0] + ": " + parseFloat(this.value).toFixed(2);
+    elem.innerHTML = text;
+}
+
+
 
 // ------------------------- Event listeners
 tickButton.addEventListener("click", () => {

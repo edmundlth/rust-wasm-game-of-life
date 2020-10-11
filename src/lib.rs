@@ -113,7 +113,11 @@ impl Universe {
         self.to_string()
     }
 
-    pub fn tick(&mut self) {
+    pub fn tick(&mut self,
+                birth_rate: f64,
+                spontaneous_birth_rate: f64,
+                crowding_death_rate: f64,
+                isolation_death_rate: f64) {
         let mut next = self.cells.clone();
 
         for row in 0..self.height {
@@ -121,11 +125,13 @@ impl Universe {
                 let idx = self.get_index(row, col);
                 let cell = self.cells[idx];
                 let live_neighbours = self.live_neighbour_count(row, col);
-
+                let rand: f64 = js_sys::Math::random();
                 let next_cell = match (cell, live_neighbours) {
-                    (Cell::Alive, x) if (x < 2 || x > 3) => Cell::Dead,
+                    (Cell::Alive, x) if (x < 2 && rand < isolation_death_rate) => Cell::Dead,
+                    (Cell::Alive, x) if (x > 3 && rand < crowding_death_rate) => Cell::Dead,
                     (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
-                    (Cell::Dead, 3) => Cell::Alive,
+                    (Cell::Dead, 3) if (rand < birth_rate) => Cell::Alive,
+                    (Cell::Dead, _) if (rand < spontaneous_birth_rate) => Cell::Alive,
                     (otherwise, _) => otherwise,
                 };
                 next[idx] = next_cell;
